@@ -1,0 +1,7 @@
+.idea
+db.sqlite3
+*__pyc__
+local_*.py
+__pycache__/
+*.pyc
+*.jpg
