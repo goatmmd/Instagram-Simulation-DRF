@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from activity.serializers import CommentListSerializer
+# from activity.serializers import CommentListSerializer
 from content.models import Tag, Post, PostMedia, PostTag
-from location.models import Location
 from location.serializers import LocationSerializer
 
 
@@ -76,7 +76,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
     location = LocationSerializer()
     media = PostMediaSerializer(many=True)
     tags = PostTagSerializer(many=True)
+    comments = CommentListSerializer(many=True)
 
     class Meta:
         model = Post
-        fields = ('caption', 'user', 'location', 'media', 'tags')
+        fields = ('id', 'caption', 'user', 'location', 'media', 'tags', 'comments')

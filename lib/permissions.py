@@ -4,15 +4,12 @@ from relation.models import Relation
 
 
 class RelationExists(BasePermission):
-    message = "You should follow the user for see posts"
+    message = "You should follow the user for see the posts"
 
     def has_permission(self, request, view):
-        user = User.objects.filter(username=view.kwargs['username']).first()
-        if user:
-            return Relation.objects.filter(
-                from_user=request.user, to_user=user
-            ).exists() | bool(request.user == user)
-        return False
+        return Relation.objects.filter(
+            from_user=request.user, to_user__username=view.kwargs['username']
+        ).exists() | bool(request.user.username == view.kwargs['username'])
 
 
 class HasPostPermission(BasePermission):

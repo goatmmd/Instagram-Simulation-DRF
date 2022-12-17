@@ -16,14 +16,14 @@ CAPTION = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusm
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        parser.add_arguments('--length', type=int)
+        parser.add_argument('--length', type=int)
 
     def handle(self, *args, **options):
         users = User.objects.all()
         location = Location.objects.all()
 
         created_posts = []
-        for i in range(options['--length'] + 1):
+        for i in range(options['length']):
             Post.objects.create(
                 caption=CAPTION, user=random.choice(users), location=random.choice(location)
             )

@@ -1,3 +1,4 @@
+from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -5,6 +6,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import ListCreateAPIView
+
+from activity.serializers import LikeSerializer
 from content.models import Tag, Post
 from content.serializers import TagListSerializer, PostDetailSerializer, TagDetailSerializer
 from lib.pagination import SmallPageNumberPagination
@@ -92,10 +95,30 @@ class UserPostRetrieveAPIView(RetrieveAPIView):
 
 
 class UserPostReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
-    # pagination_class = SmallPageNumberPagination
+    lookup_url_kwarg = 'pk'
+    pagination_class = SmallPageNumberPagination
     permission_classes = [IsAuthenticated, RelationExists]
 
     def get_queryset(self):
-        posts = Post.objects.filter(user__username=self.kwargs['username'])
-        return posts
+        qs = super().get_queryset()
+        return qs.filter(user__username=self.kwargs['username'])
+
+    def get_serializer_class(self):
+        if self.action == 'get_like_list':
+            return LikeSerializer
+        return self.serializer_class
+
+    @action(methods=["GET"], detail=True)
+    def get_like_list(self, request, *args, **kwargs):
+        post = self.get_object()
+        queryset = post.likes.all()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
