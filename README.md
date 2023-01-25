@@ -1,27 +1,18 @@
 # Instagram Clone (Django Rest API)
 
 # Endpoints
-### User:
-    - api/auth/profile/                                   - Retrieve|Update
-    - api/auth/profile/follower/                          - List
-    - api/auth/profile/following/                         - List
-    - api/auth/profile/invitation/                        - List
-    - api/auth/profile/<str:username>/                    - Retrieve
-### Relation:
-    - api/relation/friendships/<int:pk>/follow/           - Create
-    - api/relation/friendships/<int:pk>/unfollow/         - Delete
-    - api/relation/friendships/<int:pk>/accept/           - Create
-    - api/relation/friendships/<int:pk>/reject/           - Delete
+### User(JWT):
+    - api/auth/token/                                   - Retrieve
+    - api/auth/token/refresh/                           - Retrieve
 ### Content:
-    - api/content/post/add/                               - Create
-    - api/content/<str:username>/posts/                   - List
-    - api/content/<str:username>/posts/<int:pk>/          - Retrieve
-    - api/content/<str:username>/posts/<int:pk>/comments/ - List
-    - api/content/<str:username>/posts/<int:pk>/likes/    - List
+    - content/tag/list/                                           - List
+    - content/tag/<int:pk>/                                       - Retrieve
+    - content/post/<int:pk>/                                      - Retrieve
+    - content/user/<str:username>/posts/                          - List
+    - content/user/<str:username>/posts/<int:pk>/                 - Retrieve
+    - content/user/<str:username>/posts/<int:pk>/get_like_list    - List
 ### Activity:
-    - api/activity/comments/<int:pk>/add/                 - Create
-    - api/activity/likes/<int:pk>/like/                   - Create
-    - api/activity/likes/<int:pk>/unlike/                 - Delete
+    - activity/comment/<int:pk>/add/                 - Create
+    - activity/comment/retrieve/<int:pk>/            - Retrieve
+    - activity/comment/delete/<int:pk>/              - Delete
 
-# Run this project
-`[sudo] docker compose up --build`
