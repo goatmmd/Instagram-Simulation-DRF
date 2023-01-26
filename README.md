@@ -1,4 +1,4 @@
-# Instagram Clone (Django Rest API)
+# Instagram API simulation (Django Rest API)
 
 # Endpoints
 ### User(JWT):
